@@ -47,7 +47,7 @@ Route::group(['middleware' => 'api'], function(){
 	// Delete Contact
 	Route::delete('contact/{id}', function($id){
 		return Contact::destroy($id);
-	})
+	});
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
