@@ -13881,7 +13881,7 @@ window.Vue = __webpack_require__(36);
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
+var axios = __webpack_require__(17);
 Vue.component('contacts', __webpack_require__(48));
 
 var app = new Vue({
@@ -47311,11 +47311,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	},
 	mounted: function mounted() {
 		console.log('Console component loaded');
+		this.fetchContactList();
 	},
 	methods: {
+		fetchContactList: function fetchContactList() {
+			var _this = this;
+
+			console.log('Fetching contacts');
+			axios.get('api/contacts').then(function (response) {
+				console.log(response.data);
+				_this.list = response.data;
+			}).catch(function (error) {
+				console.log(error);
+			});
+		},
 		createContact: function createContact() {
 			console.log('Creating contact...');
-			return;
+			var self = this;
+			var params = Object.assign({}, self.contact);
+			axios.post('api/contact/store', params).then(function () {
+				self.contact.name = '';
+				self.contact.email = '';
+				self.contact.phone = '';
+				self.edit = false;
+				self.fetchContactList();
+			}).catch(function (error) {
+				console.log(error);
+			});
 		},
 		updateContact: function updateContact(id) {
 			console.log('Updating ' + id + ' contact...');
